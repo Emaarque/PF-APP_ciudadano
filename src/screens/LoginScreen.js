@@ -1,4 +1,5 @@
 // src/screens/LoginScreen.js
+// src/screens/LoginScreen.js
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import {
@@ -14,21 +15,36 @@ import { setCredentials } from "../features/auth/authSlice";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
+  const [alias, setAlias] = useState("");
   const [password, setPassword] = useState("");
   const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useDispatch();
 
   const handleLogin = async () => {
-    try {
-      const user = await login({ email, password }).unwrap();
-      await AsyncStorage.setItem("jwt_token", user.token);
-      dispatch(setCredentials({ user: user.user, token: user.token }));
-      // Navega al área protegida si es necesario
-      navigation.replace('Main'); // Asegúrate de que 'Home' es el nombre correcto de tu pantalla
+    /* try {
+      const response = await login({ alias, password }).unwrap();
+      const { token, user } = response;
+
+      if (token) {
+        await AsyncStorage.setItem("jwt_token", token);
+        dispatch(setCredentials({ user: user || {}, token }));
+        navigation.replace('Main'); // Navega al área protegida
+      } else {
+        alert('No se recibió el token de autenticación.');
+      }
     } catch (err) {
       console.error('Error en el login:', err);
-    }
+      alert('Error al iniciar sesión. Verifica tus credenciales.');
+    } */
+      try {
+        const user = await login({ alias, password }).unwrap();
+        await AsyncStorage.setItem("jwt_token", user.token);
+        dispatch(setCredentials({ user: user.user, token: user.token }));
+        // Navega al área protegida si es necesario
+        navigation.replace('Home'); // Asegúrate de que 'Home' es el nombre correcto de tu pantalla
+      } catch (err) {
+        console.error('Error en el login:', err);
+      }
   };
 
   return (
@@ -36,16 +52,15 @@ const LoginScreen = ({ navigation }) => {
       <Title style={styles.title}>Iniciar Sesión</Title>
       {error && (
         <Paragraph style={styles.error}>
-          {error.data?.message || "Error al iniciar sesión"}
+          {error.data?.message || error.error || "Error al iniciar sesión"}
         </Paragraph>
       )}
       <TextInput
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
+        label="Alias"
+        value={alias}
+        onChangeText={setAlias}
         style={styles.input}
         autoCapitalize="none"
-        keyboardType="email-address"
       />
       <TextInput
         label="Contraseña"
@@ -69,6 +84,8 @@ const LoginScreen = ({ navigation }) => {
 };
 
 export default LoginScreen;
+
+// ... estilos permanecen igual
 const styles = StyleSheet.create({
   container: {
     flex: 1,
