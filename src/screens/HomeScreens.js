@@ -1,7 +1,7 @@
 // src/screens/HomeScreen.js
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Title } from 'react-native-paper';
+import { Title, Button } from 'react-native-paper';
 import LogoutButton from '../components/LogoutButton';
 import Navbar from '../components/Navbar';
 
@@ -12,6 +12,13 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.content}>
         <Title>Bienvenido a la aplicación</Title>
         <LogoutButton />
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate('ReclamoList')}
+          style={styles.button}
+        >
+          Ver Reclamos Realizados
+        </Button>
       </View>
     </View>
   );
@@ -28,5 +35,8 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  button: {
+    marginTop: 20,
   },
 });

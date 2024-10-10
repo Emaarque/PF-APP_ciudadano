@@ -2,7 +2,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "../screens/HomeScreens";
-import DashboardScreen from '../screens/DashboardScreen';
+import DashboardScreen from '../screens/ReclamoCreateScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; // O 'react-native-vector-icons/MaterialCommunityIcons' si no usas Expo
 
